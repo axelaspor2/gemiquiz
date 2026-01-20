@@ -1,0 +1,117 @@
+exam_code: PDE
+exam_name: Professional Data Engineer
+
+domains:
+  - name: データの取り込みと処理
+    percentage: 25
+    sections:
+      - name: データソースの取り込み
+        topics:
+          - name: Cloud Pub/Sub によるストリーミングデータの取り込み
+          - name: Dataflow を使用したバッチ・ストリーミング処理
+          - name: Cloud Storage Transfer Service
+          - name: Database Migration Service
+          - name: BigQuery Data Transfer Service
+      - name: データパイプラインの設計
+        topics:
+          - name: Apache Beam プログラミングモデル
+          - name: Dataflow のウィンドウ処理とトリガー
+          - name: Dataflow テンプレート
+          - name: パイプラインのスケーリングと最適化
+      - name: データ処理の実装
+        topics:
+          - name: ETL / ELT パターンの選択
+          - name: バッチ処理とストリーム処理の違い
+          - name: データ品質チェックと検証
+          - name: エラーハンドリングと再試行戦略
+
+  - name: データの保存
+    percentage: 20
+    sections:
+      - name: ストレージソリューションの選択
+        topics:
+          - name: Cloud Storage（オブジェクトストレージ）
+          - name: BigQuery（データウェアハウス）
+          - name: Cloud SQL（リレーショナル DB）
+          - name: Cloud Spanner（グローバル分散 DB）
+          - name: Bigtable（NoSQL ワイドカラム）
+          - name: Firestore（ドキュメント DB）
+          - name: Memorystore（インメモリ DB）
+      - name: データモデリング
+        topics:
+          - name: BigQuery のパーティショニング
+          - name: BigQuery のクラスタリング
+          - name: ネストされたフィールドと繰り返しフィールド
+          - name: 正規化 vs 非正規化の判断
+      - name: データライフサイクル管理
+        topics:
+          - name: Cloud Storage のライフサイクルポリシー
+          - name: BigQuery のテーブル有効期限
+          - name: データアーカイブ戦略
+          - name: コスト最適化
+
+  - name: データの分析と可視化
+    percentage: 15
+    sections:
+      - name: BigQuery での分析
+        topics:
+          - name: 標準 SQL とレガシー SQL
+          - name: ウィンドウ関数
+          - name: ユーザー定義関数（UDF）
+          - name: BigQuery ML
+          - name: クエリの最適化
+          - name: スロットとリザベーション
+      - name: データ可視化
+        topics:
+          - name: Looker の概要
+          - name: Looker Studio（旧 Data Studio）
+          - name: Connected Sheets
+      - name: レポーティング
+        topics:
+          - name: スケジュールされたクエリ
+          - name: マテリアライズドビュー
+          - name: BI Engine
+
+  - name: 機械学習の基礎
+    percentage: 20
+    sections:
+      - name: ML プラットフォームの選択
+        topics:
+          - name: Vertex AI の概要
+          - name: AutoML vs カスタムモデル
+          - name: BigQuery ML の活用
+          - name: 事前トレーニング済み API
+      - name: ML パイプライン
+        topics:
+          - name: 特徴量エンジニアリング
+          - name: Feature Store
+          - name: モデルのトレーニングとデプロイ
+          - name: Vertex AI Pipelines
+      - name: ML のベストプラクティス
+        topics:
+          - name: データの前処理と分割
+          - name: モデルの評価指標
+          - name: 過学習と正則化
+          - name: MLOps の基本概念
+
+  - name: データセキュリティとガバナンス
+    percentage: 20
+    sections:
+      - name: アクセス制御
+        topics:
+          - name: IAM ロールと権限
+          - name: BigQuery の行レベルセキュリティ
+          - name: 列レベルセキュリティとポリシータグ
+          - name: データカタログ
+      - name: データ保護
+        topics:
+          - name: 保存時の暗号化（CMEK）
+          - name: 転送中の暗号化
+          - name: VPC Service Controls
+          - name: Secret Manager
+      - name: コンプライアンスと監査
+        topics:
+          - name: Cloud Audit Logs
+          - name: Data Loss Prevention（DLP）
+          - name: データリネージ
+          - name: データ保持ポリシー

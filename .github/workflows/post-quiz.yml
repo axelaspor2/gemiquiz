@@ -1,0 +1,62 @@
+name: Post Daily Quiz
+
+on:
+  schedule:
+    # JST 9:00, 13:00, 18:00
+    - cron: "0 0 * * *"   # UTC 0:00 = JST 9:00
+    - cron: "0 4 * * *"   # UTC 4:00 = JST 13:00
+    - cron: "0 9 * * *"   # UTC 9:00 = JST 18:00
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (skip Discord posting)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  post-quiz:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate and post quiz
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            npm run post-quiz -- --dry-run
+          else
+            npm run post-quiz
+          fi
+
+      - name: Save quiz data as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: quiz-data
+          path: data/current/
+          retention-days: 7
+
+      - name: Commit quiz data
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/current/
+          git diff --staged --quiet || git commit -m "chore: save quiz data for $(date +%Y-%m-%d)"
+          git push

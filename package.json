@@ -1,0 +1,36 @@
+{
+  "name": "gemiquiz",
+  "version": "1.0.0",
+  "description": "GCP certification study automation tool with Gemini CLI and Discord",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "post-quiz": "tsx src/scripts/post-quiz.ts",
+    "post-answer": "tsx src/scripts/post-answer.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "gcp",
+    "certification",
+    "quiz",
+    "gemini",
+    "discord"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "discord.js": "^14.16.3",
+    "js-yaml": "^4.1.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
