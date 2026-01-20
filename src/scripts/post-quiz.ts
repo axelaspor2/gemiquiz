@@ -1,5 +1,6 @@
 import { execSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { getTodaysTopic, selectQuestionType, generateQuizId } from "../rotation/index.js";
 import { selectDifficulty } from "../quiz/generator.js";
@@ -80,44 +81,57 @@ async function generateQuizWithGeminiCLI(
 
   console.log("  Prompt prepared, calling Gemini CLI...");
 
-  // Execute Gemini CLI
-  const result = execSync(`gemini -p "${fullPrompt.replace(/"/g, '\\"')}" --yolo`, {
-    encoding: "utf-8",
-    maxBuffer: 10 * 1024 * 1024, // 10MB
-    env: {
-      ...process.env,
-      GEMINI_API_KEY: process.env.GEMINI_API_KEY,
-    },
-  });
+  // Write prompt to temp file to avoid shell escaping issues
+  const tmpDir = os.tmpdir();
+  const promptFile = path.join(tmpDir, `gemini-prompt-${Date.now()}.txt`);
+  fs.writeFileSync(promptFile, fullPrompt, "utf-8");
 
-  console.log("  Gemini CLI response received, parsing...");
+  try {
+    // Execute Gemini CLI with prompt from stdin
+    const result = execSync(`cat "${promptFile}" | gemini --yolo`, {
+      encoding: "utf-8",
+      maxBuffer: 10 * 1024 * 1024, // 10MB
+      env: {
+        ...process.env,
+        GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+      },
+      shell: "/bin/bash",
+    });
 
-  // Extract JSON from response
-  const jsonMatch = result.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) {
-    throw new Error("Failed to extract JSON from Gemini CLI response");
+    console.log("  Gemini CLI response received, parsing...");
+
+    // Extract JSON from response
+    const jsonMatch = result.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error("Failed to extract JSON from Gemini CLI response");
+    }
+
+    const rawQuiz = JSON.parse(jsonMatch[0]);
+
+    // Build full Quiz object
+    const quiz: Quiz = {
+      id: generateQuizId(topic, date),
+      exam_code: topic.exam_code,
+      domain: topic.domain,
+      section: topic.section,
+      topic: topic.topic,
+      difficulty: difficulty as "easy" | "medium" | "hard",
+      question: rawQuiz.question,
+      options: rawQuiz.options,
+      correct: rawQuiz.correct,
+      explanation: rawQuiz.explanation,
+    };
+
+    // Validate with schema
+    QuizSchema.parse(quiz);
+
+    return quiz;
+  } finally {
+    // Clean up temp file
+    if (fs.existsSync(promptFile)) {
+      fs.unlinkSync(promptFile);
+    }
   }
-
-  const rawQuiz = JSON.parse(jsonMatch[0]);
-
-  // Build full Quiz object
-  const quiz: Quiz = {
-    id: generateQuizId(topic, date),
-    exam_code: topic.exam_code,
-    domain: topic.domain,
-    section: topic.section,
-    topic: topic.topic,
-    difficulty: difficulty as "easy" | "medium" | "hard",
-    question: rawQuiz.question,
-    options: rawQuiz.options,
-    correct: rawQuiz.correct,
-    explanation: rawQuiz.explanation,
-  };
-
-  // Validate with schema
-  QuizSchema.parse(quiz);
-
-  return quiz;
 }
 
 async function main(options: PostQuizOptions = {}) {
