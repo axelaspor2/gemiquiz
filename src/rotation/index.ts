@@ -6,6 +6,7 @@ import {
   type ExamDomains,
   type FlattenedTopic,
 } from "./domains.js";
+import type { QuestionType } from "../quiz/types.js";
 
 /**
  * Load exam domains from YAML file
@@ -58,15 +59,42 @@ export function getDayOfYear(date: Date = new Date()): number {
 }
 
 /**
- * Select topic based on date rotation
+ * Get time slot based on UTC hour
+ * UTC 0:00 (JST 9:00) -> slot 0
+ * UTC 4:00 (JST 13:00) -> slot 1
+ * UTC 9:00 (JST 18:00) -> slot 2
+ */
+export function getTimeSlot(date: Date = new Date()): number {
+  const hour = date.getUTCHours();
+  if (hour >= 9) return 2;
+  if (hour >= 4) return 1;
+  return 0;
+}
+
+/**
+ * Select topic based on date and time slot rotation
  */
 export function selectTopicByDate(
   topics: FlattenedTopic[],
   date: Date = new Date()
 ): FlattenedTopic {
   const dayOfYear = getDayOfYear(date);
-  const index = dayOfYear % topics.length;
+  const slot = getTimeSlot(date);
+  const index = (dayOfYear * 3 + slot) % topics.length;
   return topics[index];
+}
+
+/**
+ * Select question type based on time of day
+ * UTC 0:00 (JST 9:00) -> concept (概念・定義の理解)
+ * UTC 4:00 (JST 13:00) -> best-practice (ベストプラクティス・推奨設定)
+ * UTC 9:00 (JST 18:00) -> troubleshooting (問題解決・トラブルシューティング)
+ */
+export function selectQuestionType(date: Date = new Date()): QuestionType {
+  const hour = date.getUTCHours();
+  if (hour >= 9) return "troubleshooting";
+  if (hour >= 4) return "best-practice";
+  return "concept";
 }
 
 /**
