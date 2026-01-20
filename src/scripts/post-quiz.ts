@@ -90,7 +90,7 @@ async function generateQuizWithGeminiCLI(
     // Execute Gemini CLI with prompt from stdin
     // Gemini CLI uses GOOGLE_API_KEY environment variable
     const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
-    const model = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+    const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
     const result = execSync(`cat "${promptFile}" | gemini --model ${model} --yolo`, {
       encoding: "utf-8",
       maxBuffer: 10 * 1024 * 1024, // 10MB
