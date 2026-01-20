@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "gcp-docs": {
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "axelaspor2/gcp-document-mcp"],
+      "timeout": 60000,
+      "trust": true
+    }
+  }
+}

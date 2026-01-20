@@ -34,6 +34,50 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Docker image cache
+      - name: Cache Docker images
+        uses: actions/cache@v4
+        with:
+          path: /tmp/docker-cache
+          key: docker-gcp-mcp-${{ hashFiles('gemini-settings.json') }}
+          restore-keys: |
+            docker-gcp-mcp-
+
+      - name: Load Docker cache
+        run: |
+          if [ -f /tmp/docker-cache/gcp-mcp.tar ]; then
+            docker load < /tmp/docker-cache/gcp-mcp.tar
+            echo "Docker cache loaded"
+          fi
+
+      - name: Pull MCP server image
+        run: |
+          if ! docker image inspect axelaspor2/gcp-document-mcp > /dev/null 2>&1; then
+            docker pull axelaspor2/gcp-document-mcp
+          fi
+
+      - name: Save Docker cache
+        run: |
+          mkdir -p /tmp/docker-cache
+          docker save axelaspor2/gcp-document-mcp > /tmp/docker-cache/gcp-mcp.tar
+
+      # Gemini CLI cache
+      - name: Cache Gemini CLI
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm/_npx
+          key: gemini-cli-${{ runner.os }}
+
+      - name: Install Gemini CLI
+        run: npm install -g @google/gemini-cli
+
+      # Gemini configuration
+      - name: Configure Gemini
+        run: |
+          mkdir -p ~/.gemini
+          cp gemini-settings.json ~/.gemini/settings.json
+
+      # Generate and post quiz
       - name: Generate and post quiz
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
