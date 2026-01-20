@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+// Question type for different quiz styles
+export type QuestionType = "concept" | "best-practice" | "troubleshooting";
+
 // Quiz schema and type
 export const QuizSchema = z.object({
   id: z.string(),
