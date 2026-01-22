@@ -1,17 +1,17 @@
 {
-  "id": "pde-20260122-database-migration-s",
+  "id": "pde-20260122-bigquery-data-transf",
   "exam_code": "PDE",
   "domain": "データの取り込みと処理",
   "section": "データソースの取り込み",
-  "topic": "Database Migration Service",
+  "topic": "BigQuery Data Transfer Service",
   "difficulty": "medium",
-  "question": "Database Migration Service (DMS) を使用して、オンプレミスの PostgreSQL データベースを Cloud SQL for PostgreSQL に移行することを計画しています。移行時間を最小限に抑え、パフォーマンスを最適化するためのベストプラクティスとして、最も適切なものはどれですか？",
+  "question": "BigQuery Data Transfer Service を使用して、Google Cloud Storage から BigQuery データセットへデータを定期的に転送するジョブを構成しました。設定自体はエラーなく完了しましたが、スケジュールされた転送ジョブの実行履歴を確認すると「Permission denied」というエラーメッセージが表示され、転送が失敗していました。この問題を解決するために最初に行うべき対応はどれですか？",
   "options": [
-    "移行中は移行先インスタンスの自動バックアップを無効にし、より高い vCPU とメモリを持つマシンタイプを一時的に使用する。",
-    "移行の整合性を確保するため、移行開始直前に移行先インスタンスで高可用性（HA）を有効にする。",
-    "データ転送速度を最大化するため、移行中はパブリック IP アドレスのみを使用して接続を構成する。",
-    "移行中のデータ損失を防ぐため、移行先インスタンスのポイントインタイムリカバリ（PITR）を有効にしたままにする。"
+    "転送設定を作成したユーザーに roles/bigquery.admin 役割が付与されているかを確認し、不足していれば付与する。",
+    "BigQuery Data Transfer Service のサービスエージェント（p{PROJECT_NUMBER}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com）に、転送先データセットに対する roles/bigquery.dataEditor 役割が付与されているか確認する。",
+    "Cloud Storage バケットの権限設定を確認し、転送設定を作成したユーザーに roles/storage.objectViewer 役割が付与されているか確認する。",
+    "プロジェクトの API ライブラリで BigQuery Data Transfer API が無効になっていないか確認し、無効であれば有効化する。"
   ],
-  "correct": 0,
-  "explanation": "Google Cloud の Database Migration Service (DMS) を使用する際、移行のパフォーマンスを最適化するための推奨事項は以下の通りです。1. 一時的なスケールアップ: 移行中の大量のデータ読み込みと書き込みを効率的に処理するために、移行先インスタンスの vCPU やメモリを一時的に増やし、移行完了後に適切なサイズにダウングレードすることが推奨されます。2. バックアップと PITR の無効化: 自動バックアップやポイントインタイムリカバリ (PITR) はディスク I/O のオーバーヘッドを発生させるため、初期データのロード中はこれらを無効にすることで移行速度が向上します。3. 高可用性 (HA) の遅延設定: HA の有効化はデータのレプリケーション負荷を増加させるため、移行が完了してインスタンスを昇格させる直前に有効にすることがベストプラクティスです。また、一般的にプライベート IP 接続の方がパブリック IP よりも高速かつ安全です。"
+  "correct": 1,
+  "explanation": "BigQuery Data Transfer Service (DTS) が実行時に「Permission denied」や「Table does not exist」などのエラーを返す場合、多くは DTS のサービスエージェントに必要な権限が不足していることが原因です。DTS はユーザーに代わってバックグラウンドでジョブを実行するため、サービスエージェント（形式: p{PROJECT_NUMBER}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com）が転送先データセットにデータを書き込むための「BigQuery データ編集者 (roles/bigquery.dataEditor)」役割を持っている必要があります。ユーザー自身に権限があっても、サービスエージェントに権限がないと実行時に失敗します。Aは作成権限に関わるもので、実行時の失敗とは異なります。Cはユーザーの権限ですが、DTS実行時はサービスアカウント/エージェントの権限が重要です。DはAPIが無効であれば設定自体ができません。"
 }
