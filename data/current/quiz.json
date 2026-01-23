@@ -1,17 +1,17 @@
 {
-  "id": "pde-20260122-bigquery-data-transf",
+  "id": "pde-20260123-apache-beam",
   "exam_code": "PDE",
   "domain": "データの取り込みと処理",
-  "section": "データソースの取り込み",
-  "topic": "BigQuery Data Transfer Service",
+  "section": "データパイプラインの設計",
+  "topic": "Apache Beam プログラミングモデル",
   "difficulty": "medium",
-  "question": "BigQuery Data Transfer Service を使用して、Google Cloud Storage から BigQuery データセットへデータを定期的に転送するジョブを構成しました。設定自体はエラーなく完了しましたが、スケジュールされた転送ジョブの実行履歴を確認すると「Permission denied」というエラーメッセージが表示され、転送が失敗していました。この問題を解決するために最初に行うべき対応はどれですか？",
+  "question": "あるデータエンジニアが、Google Cloud Dataflow を使用して、Cloud Storage からの過去のログ（バッチ）と Pub/Sub からのリアルタイムメッセージ（ストリーミング）の両方を処理するパイプラインを設計しています。Apache Beam プログラミングモデルにおいて、これら性質の異なるデータセットを統一的に表現し、パイプラインの各ステップでの入力と出力として機能する抽象化概念はどれですか？",
   "options": [
-    "転送設定を作成したユーザーに roles/bigquery.admin 役割が付与されているかを確認し、不足していれば付与する。",
-    "BigQuery Data Transfer Service のサービスエージェント（p{PROJECT_NUMBER}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com）に、転送先データセットに対する roles/bigquery.dataEditor 役割が付与されているか確認する。",
-    "Cloud Storage バケットの権限設定を確認し、転送設定を作成したユーザーに roles/storage.objectViewer 役割が付与されているか確認する。",
-    "プロジェクトの API ライブラリで BigQuery Data Transfer API が無効になっていないか確認し、無効であれば有効化する。"
+    "PCollection",
+    "PTransform",
+    "Pipeline",
+    "Runner"
   ],
-  "correct": 1,
-  "explanation": "BigQuery Data Transfer Service (DTS) が実行時に「Permission denied」や「Table does not exist」などのエラーを返す場合、多くは DTS のサービスエージェントに必要な権限が不足していることが原因です。DTS はユーザーに代わってバックグラウンドでジョブを実行するため、サービスエージェント（形式: p{PROJECT_NUMBER}@gcp-sa-bigquerydatatransfer.iam.gserviceaccount.com）が転送先データセットにデータを書き込むための「BigQuery データ編集者 (roles/bigquery.dataEditor)」役割を持っている必要があります。ユーザー自身に権限があっても、サービスエージェントに権限がないと実行時に失敗します。Aは作成権限に関わるもので、実行時の失敗とは異なります。Cはユーザーの権限ですが、DTS実行時はサービスアカウント/エージェントの権限が重要です。DはAPIが無効であれば設定自体ができません。"
+  "correct": 0,
+  "explanation": "正解は PCollection です。Apache Beam のプログラミングモデルにおいて、PCollection は分散されたデータセットを表現する主要な抽象化概念です。PCollection の最大の特徴は、サイズが固定された「有界（bounded）」データ（バッチ処理）と、無限に続く「無界（unbounded）」データ（ストリーミング処理）の両方を同じプログラミングインターフェースで扱える点にあります。これにより、開発者はデータソースの違い（ファイルかメッセージストリームか）を意識せずに同一のロジックでパイプラインを構築できます。\n\n他の選択肢が不正解の理由：\n・PTransform: データに対する具体的な操作（フィルタリング、変換、結合など）を定義する処理ステップです。PCollection を入力として受け取り、新たな PCollection を出力します。データそのものではなく、処理のロジックを表します。\n・Pipeline: データソースからの読み込み、一連の変換（PTransform）、最終的な書き出しまでのデータ処理ジョブ全体を表現するグラフ（有向非巡回グラフ）です。\n・Runner: 作成されたパイプラインを、Google Cloud Dataflow や Apache Spark、Apache Flink などの特定の分散処理エンジンで実行するための環境（コンポーネント）を指します。"
 }
