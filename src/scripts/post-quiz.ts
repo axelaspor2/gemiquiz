@@ -8,7 +8,7 @@ import { postQuiz } from "../discord/client.js";
 import type { Quiz, QuestionType } from "../quiz/types.js";
 import { QuizSchema } from "../quiz/types.js";
 
-const EXAM_CODE = "PDE";
+const EXAM_CODE = "PMLE";
 
 interface PostQuizOptions {
   dryRun?: boolean;

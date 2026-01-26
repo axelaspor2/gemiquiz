@@ -1,0 +1,145 @@
+exam_code: PMLE
+exam_name: Professional Machine Learning Engineer
+
+domains:
+  - name: ローコード AI ソリューションの構築
+    percentage: 13
+    sections:
+      - name: BigQuery ML を使用した ML モデルの開発
+        topics:
+          - name: BigQuery ML のモデルタイプ選択（線形分類、回帰、時系列、ブーストツリー等）
+          - name: BigQuery ML を使用した特徴量エンジニアリング
+          - name: BigQuery ML による予測の生成
+      - name: ML API または基盤モデルを使用した AI ソリューションの構築
+        topics:
+          - name: Model Garden の ML API を使用したアプリケーション構築
+          - name: Document AI API の活用
+          - name: Retail API の活用
+          - name: Vertex AI Agent Builder を使用した RAG アプリケーションの実装
+      - name: AutoML を使用したモデルのトレーニング
+        topics:
+          - name: AutoML 用のデータ準備（特徴選択、データラベル付け）
+          - name: AutoML での表形式ワークフロー
+          - name: 表形式・テキスト・画像・動画データでのカスタムモデルトレーニング
+          - name: AutoML を使用した予測モデルの作成
+          - name: トレーニング済みモデルの構成とデバッグ
+
+  - name: チーム内およびチーム間の連携によるデータとモデルの管理
+    percentage: 14
+    sections:
+      - name: 組織全体のデータの探索と前処理
+        topics:
+          - name: 異なるタイプのデータの効率的なトレーニング
+          - name: Vertex AI でのデータセット管理
+          - name: Dataflow を使用したデータ前処理
+          - name: TensorFlow Extended（TFX）によるデータ処理
+          - name: Vertex AI Feature Store での特徴の作成と統合
+          - name: PII・PHI などの機密データ処理とプライバシー
+          - name: Vertex AI へのさまざまなデータソースの取り込み
+      - name: Jupyter ノートブックを使用したモデルのプロトタイピング
+        topics:
+          - name: Vertex AI Workbench の選択と活用
+          - name: Colab Enterprise の活用
+          - name: Dataproc 上のノートブック
+          - name: Vertex AI Workbench のセキュリティベストプラクティス
+          - name: Spark カーネルの使用
+          - name: TensorFlow・PyTorch・sklearn・JAX を使用したモデル開発
+          - name: Model Garden の基盤モデルとオープンソースモデルの活用
+      - name: ML テストのトラッキングと実行
+        topics:
+          - name: Vertex AI Experiments の活用
+          - name: Kubeflow Pipelines での実験管理
+          - name: Vertex AI TensorBoard の活用
+          - name: 生成 AI ソリューションの評価
+
+  - name: プロトタイプの ML モデルへのスケーリング
+    percentage: 18
+    sections:
+      - name: モデルの構築
+        topics:
+          - name: ML フレームワークとモデルアーキテクチャの選択
+          - name: 解釈可能性要件に基づくモデリング技術
+      - name: モデルのトレーニング
+        topics:
+          - name: トレーニングデータの整理（表形式、テキスト、画像、動画等）
+          - name: さまざまなファイル形式のインポート（CSV、JSON、画像等）
+          - name: Vertex AI カスタムトレーニング
+          - name: GKE 上の Kubeflow を使用したトレーニング
+          - name: 分散トレーニングによる信頼性の高いパイプライン
+          - name: ハイパーパラメータ調整
+          - name: ML モデルのトレーニング失敗のトラブルシューティング
+          - name: 基盤モデルのファインチューニング（Vertex AI、Model Garden）
+      - name: トレーニングに適したハードウェアの選択
+        topics:
+          - name: CPU・GPU・TPU・エッジデバイスの選択
+          - name: TPU と GPU を使用した分散トレーニング
+          - name: Vertex AI 上の Reduction Server
+          - name: Horovod を使用した分散トレーニング
+
+  - name: モデルの提供とスケーリング
+    percentage: 20
+    sections:
+      - name: モデルの提供
+        topics:
+          - name: バッチ推論とオンライン推論の選択
+          - name: Vertex AI でのモデル提供
+          - name: Dataflow を使用したバッチ推論
+          - name: BigQuery ML を使用した推論
+          - name: PyTorch・XGBoost を使用したモデル提供
+          - name: Model Registry でのモデル整理
+          - name: 異なるモデルバージョンを使用した A/B テスト
+      - name: オンラインモデルサービングのスケーリング
+        topics:
+          - name: Vertex AI Feature Store を使用した特徴のサービング
+          - name: パブリックエンドポイントへのモデルデプロイ
+          - name: プライベートエンドポイントへのモデルデプロイ
+          - name: サービング用ハードウェアの選択（CPU、GPU、TPU）
+          - name: スループットに基づくサービスバックエンドのスケーリング
+          - name: 本番環境でのモデル最適化（レイテンシ、メモリ、スループット）
+
+  - name: ML パイプラインの自動化とオーケストレーション
+    percentage: 22
+    sections:
+      - name: エンドツーエンドの ML パイプライン開発
+        topics:
+          - name: データとモデルの検証
+          - name: トレーニングとサービング間の一貫したデータ前処理
+          - name: MLFlow のホスティング
+          - name: Cloud Build を使用したパイプライン構築
+          - name: Cloud Run を使用したパイプライン構築
+          - name: Kubeflow Pipelines の活用
+          - name: Vertex AI Pipelines の活用
+          - name: Cloud Composer の活用
+          - name: ハイブリッド・マルチクラウド戦略
+          - name: TFX コンポーネントを使用したシステム設計
+      - name: モデルの再トレーニング自動化
+        topics:
+          - name: 適切な再トレーニングポリシーの決定
+          - name: CI/CD パイプラインでのモデルデプロイ
+          - name: Cloud Build を使用した MLOps
+          - name: Jenkins を使用した MLOps
+      - name: メタデータのトラッキングと監査
+        topics:
+          - name: Vertex AI Experiments でのアーティファクト追跡
+          - name: Vertex ML Metadata の活用
+          - name: モデルとデータセットのバージョン管理
+          - name: モデルとデータ系列の管理
+
+  - name: AI ソリューションのモニタリング
+    percentage: 13
+    sections:
+      - name: AI ソリューションのリスク特定
+        topics:
+          - name: 安全な ML システムの構築（データ・モデルの保護）
+          - name: Google の責任ある AI への取り組み
+          - name: バイアスのモニタリング
+          - name: AI ソリューションの公平性評価
+          - name: Vertex AI での説明可能性（Explainable AI）
+      - name: AI ソリューションのモニタリング、テスト、トラブルシューティング
+        topics:
+          - name: Vertex AI Model Monitoring の活用
+          - name: 継続的な評価指標の確立
+          - name: トレーニング/サービングスキューのモニタリング
+          - name: 特徴アトリビューションのドリフトモニタリング
+          - name: ベースラインに対するパフォーマンス監視
+          - name: トレーニングエラーとサービングエラーのモニタリング
