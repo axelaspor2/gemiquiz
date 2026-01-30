@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260129-model-garden-ml-api",
+  "id": "pmle-20260130-document-ai-api",
   "exam_code": "PMLE",
   "domain": "ローコード AI ソリューションの構築",
   "section": "ML API または基盤モデルを使用した AI ソリューションの構築",
-  "topic": "Model Garden の ML API を使用したアプリケーション構築",
+  "topic": "Document AI API の活用",
   "difficulty": "medium",
-  "question": "ある企業が Vertex AI Model Garden の基盤モデル API（Gemini API など）を使用して、リアルタイムのデータ分析アプリケーションを構築しました。本番環境への移行後、トラフィックのピーク時に一部のユーザーに対して `RESOURCE_EXHAUSTED` (HTTP 429) エラーが発生していることがログから判明しました。この問題の根本原因を特定し、解決するための最も適切な手順はどれですか？",
+  "question": "Google Cloud の Document AI において、特定の業界特有の複雑なドキュメントから必要な情報を抽出するために、基盤モデル（Foundation Model）を活用して最小限のトレーニングデータでカスタムプロセッサを構築・トレーニングできる機能はどれですか？",
   "options": [
-    "サービスアカウントに `Vertex AI ユーザー` ロールが不足している可能性があるため、IAM 権限を確認してロールを付与する。",
-    "Google Cloud コンソールの [割り当てとシステム制限] を確認して API のレート制限（RPM/TPM）に達していないか検証し、必要に応じて上限緩和を申請するとともに、アプリケーションに指数バックオフを含むリトライ処理を実装する。",
-    "Vertex AI API がプロジェクトで有効になっていない可能性があるため、API ライブラリから API のステータスを確認し、無効な場合は再度有効化する。",
-    "モデルのデプロイに使用したマシンのメモリが不足しているため、エンドポイントのノードタイプをより大容量な CPU/GPU を備えたものに変更する。"
+    "Document AI Workbench",
+    "Enterprise OCR",
+    "Specialized Processors",
+    "Document AI Summarizer"
   ],
-  "correct": 1,
-  "explanation": "`RESOURCE_EXHAUSTED` エラー（HTTP 429）は、API の割り当て（クォータ）制限を超過した際、または一時的にサーバーのリソースが不足している際に発生します。基盤モデル API の場合、1分あたりのリクエスト数 (RPM) や 1分あたりのトークン数 (TPM) に制限があるため、まずはコンソールの「割り当て」を確認することが重要です。解決策としては、上限緩和の申請や、一時的な制限を回避するための指数バックオフを用いたリトライ処理の実装が標準的です。選択肢AとCは `PERMISSION_DENIED` や接続エラーに関連し、選択肢Dはカスタムモデルのデプロイメント（エンドポイント）に関する内容であり、基盤モデル API のレート制限エラーに対する直接的な解決策ではありません。"
+  "correct": 0,
+  "explanation": "正解は Document AI Workbench です。Document AI Workbench は、生成 AI（基盤モデル）を活用することで、わずか 10 枚程度のドキュメントで高精度なカスタムプロセッサを構築できる低コードのソリューションを提供します。Enterprise OCR は主にテキストのデジタル化とレイアウト解析を担当し、特定の項目抽出は行いません。Specialized Processors は請求書や領収書などの一般的な形式向けに事前トレーニングされたものであり、独自の形式には適しません。Document AI Summarizer はドキュメントの要約を生成するための機能です。"
 }
