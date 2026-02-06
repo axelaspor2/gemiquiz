@@ -1,22 +1,22 @@
 {
   "quiz": {
-    "id": "pmle-20260206-model-garden",
+    "id": "pmle-20260206-kubeflow-pipelines",
     "exam_code": "PMLE",
     "domain": "チーム内およびチーム間の連携によるデータとモデルの管理",
-    "section": "Jupyter ノートブックを使用したモデルのプロトタイピング",
-    "topic": "Model Garden の基盤モデルとオープンソースモデルの活用",
+    "section": "ML テストのトラッキングと実行",
+    "topic": "Kubeflow Pipelines での実験管理",
     "difficulty": "medium",
-    "question": "Vertex AI Model Garden を活用した基盤モデルやオープンソースモデルのプロトタイピングに関する説明として、最も適切なものはどれですか？",
+    "question": "Vertex AI Pipelines を使用して ML モデルの実験を管理しています。複数のパイプライン実行（Run）を選択して「実行の比較（Compare runs）」ビューを確認しましたが、モデルの精度（Accuracy）や損失（Loss）といったメトリクスが比較テーブルに表示されません。各コンポーネント内では、Python の `print()` 文を使用してメトリクスをログ出力しています。コンソール上でこれらのメトリクスを可視化・比較できるようにするためには、コンポーネントをどのように修正すべきですか？",
     "options": [
-      "Model Garden はモデルを検索するためだけのカタログであり、Jupyter ノートブックからモデルを呼び出してプロトタイピングを行う機能は備わっていない。",
-      "Model Garden で提供される基盤モデルやオープンソースモデルは、Vertex AI SDK for Python を通じて Jupyter ノートブックに統合でき、一貫したワークフローでテストやデプロイが可能である。",
-      "オープンソースモデルをプロトタイピングする場合、Model Garden を介さずにローカル環境で実行することが Google Cloud の推奨する唯一の手段である。",
-      "Model Garden の基盤モデルは Google Cloud の内部でのみ使用可能であり、ユーザーが Jupyter ノートブックなどの外部インターフェースから API 経由で操作することはできない。"
+      "コンポーネントの定義に `Output[Metrics]` などのアーティファクト型を出力として追加し、コンポーネント内でメトリクスをこのアーティファクトに書き出すように修正する。",
+      "Cloud Logging にメトリクスが送信されるよう、コンポーネント内で `google-cloud-logging` ライブラリを使用して構造化ログを出力する。",
+      "パイプラインを実行するサービスアカウントに `Vertex AI SDK Admin` ロールを付与して、メトリクスの自動収集機能を有効にする。",
+      "コンポーネントの `base_image` を Vertex AI の専用プリビルドコンテナイメージに変更し、環境変数 `ENABLE_METRICS_EXPORT` を true に設定する。"
     ],
-    "correct": 1,
-    "explanation": "Vertex AI Model Garden は、Google の基盤モデル（Geminiなど）やサードパーティ製のオープンソースモデル（Llama, Falconなど）を集約したモデルライブラリです。これらのモデルは、Vertex AI Studio での試行だけでなく、Vertex AI SDK for Python を使用して Jupyter ノートブック環境に統合することができ、モデルの探索からテスト、プロトタイピング、デプロイまでを同一のプラットフォーム上でシームレスに行うことが可能です。選択肢0, 2, 3は、Model Garden の持つ統合性や SDK を通じたアクセシビリティを正しく反映していないため不正解です。"
+    "correct": 0,
+    "explanation": "Vertex AI Pipelines のコンソール、特に「実行の比較」ビューでメトリクスを表示・比較するためには、それらを ML Metadata のアーティファクトとして明示的に出力する必要があります。KFP SDK を使用してコンポーネントの引数に `Output[Metrics]`（スカラー値用）や `Output[ClassificationMetrics]`（混同行列や ROC 曲線用）を定義し、コンポーネント内で `metrics.log_metric()` 等のメソッドを使用して値を書き込むことで、UI 上で可視化されます。単に `print()` 文で標準出力にログを出力しただけでは、メタデータストアにメトリクスとして登録されないため、UI での比較はできません。他の選択肢（ログ出力、ロール付与、イメージ変更）では、メタデータアーティファクトとしての登録は行われません。"
   },
-  "message_id": "1469135547154042991",
+  "message_id": "1469264725974978570",
   "channel_id": "1465902692101787799",
-  "posted_at": "2026-02-06T01:00:09.964Z"
+  "posted_at": "2026-02-06T09:33:28.374Z"
 }
