@@ -1,22 +1,22 @@
 {
   "quiz": {
-    "id": "pmle-20260206-kubeflow-pipelines",
+    "id": "pmle-20260207-vertex-ai-tensorboar",
     "exam_code": "PMLE",
     "domain": "チーム内およびチーム間の連携によるデータとモデルの管理",
     "section": "ML テストのトラッキングと実行",
-    "topic": "Kubeflow Pipelines での実験管理",
-    "difficulty": "medium",
-    "question": "Vertex AI Pipelines を使用して ML モデルの実験を管理しています。複数のパイプライン実行（Run）を選択して「実行の比較（Compare runs）」ビューを確認しましたが、モデルの精度（Accuracy）や損失（Loss）といったメトリクスが比較テーブルに表示されません。各コンポーネント内では、Python の `print()` 文を使用してメトリクスをログ出力しています。コンソール上でこれらのメトリクスを可視化・比較できるようにするためには、コンポーネントをどのように修正すべきですか？",
+    "topic": "Vertex AI TensorBoard の活用",
+    "difficulty": "hard",
+    "question": "Vertex AI TensorBoard をカスタム トレーニング ジョブと統合し、チーム内およびチーム間での ML テストのトラッキングを効率化するための手法として、最も適切なものはどれですか？",
     "options": [
-      "コンポーネントの定義に `Output[Metrics]` などのアーティファクト型を出力として追加し、コンポーネント内でメトリクスをこのアーティファクトに書き出すように修正する。",
-      "Cloud Logging にメトリクスが送信されるよう、コンポーネント内で `google-cloud-logging` ライブラリを使用して構造化ログを出力する。",
-      "パイプラインを実行するサービスアカウントに `Vertex AI SDK Admin` ロールを付与して、メトリクスの自動収集機能を有効にする。",
-      "コンポーネントの `base_image` を Vertex AI の専用プリビルドコンテナイメージに変更し、環境変数 `ENABLE_METRICS_EXPORT` を true に設定する。"
+      "Vertex AI TensorBoard インスタンスを事前に作成してトレーニング ジョブに関連付け、スクリプト内で `AIP_TENSORBOARD_LOG_DIR` 環境変数が指すディレクトリにログを書き込む。",
+      "トレーニング スクリプト内に Cloud Storage 書き込み権限を持つサービス アカウントの秘密鍵を直接埋め込み、任意の GCS バケットへ手動でログファイルをアップロードする処理を実装する。",
+      "すべてのプロジェクト メンバーに `roles/storage.admin` ロールを付与し、各自がローカル PC で OSS 版 TensorBoard を起動して共通の GCS バケットに格納されたログを参照する。",
+      "Vertex AI Experiments のコンソールで「自動ログ収集」を有効にすることで、トレーニング スクリプトの標準出力（stdout）からメトリクスを自動的に TensorBoard へ転送する。"
     ],
     "correct": 0,
-    "explanation": "Vertex AI Pipelines のコンソール、特に「実行の比較」ビューでメトリクスを表示・比較するためには、それらを ML Metadata のアーティファクトとして明示的に出力する必要があります。KFP SDK を使用してコンポーネントの引数に `Output[Metrics]`（スカラー値用）や `Output[ClassificationMetrics]`（混同行列や ROC 曲線用）を定義し、コンポーネント内で `metrics.log_metric()` 等のメソッドを使用して値を書き込むことで、UI 上で可視化されます。単に `print()` 文で標準出力にログを出力しただけでは、メタデータストアにメトリクスとして登録されないため、UI での比較はできません。他の選択肢（ログ出力、ロール付与、イメージ変更）では、メタデータアーティファクトとしての登録は行われません。"
+    "explanation": "正解は 0 です。Vertex AI TensorBoard をカスタム トレーニングと統合する際、Vertex AI は `AIP_TENSORBOARD_LOG_DIR` という環境変数をトレーニング環境に自動的に提供します。このディレクトリにログを書き込むことで、Vertex AI は自動的にログをマネージド TensorBoard インスタンスにストリーミングし、チーム間で共有可能な永続的なリンクを提供します。選択肢 1 はセキュリティ上のリスク（秘密鍵の埋め込み）と運用の手間があるため不適切です。選択肢 2 は最小権限の原則に反し、マネージドな共有機能（永続リンクや IAM 制御）を活用できていないため不適切です。選択肢 3 は、Vertex AI TensorBoard が標準出力から自動的にメトリクスを収集する機能を持っていない（明示的なログ出力が必要）ため誤りです。"
   },
-  "message_id": "1469264725974978570",
+  "message_id": "1469497837959250004",
   "channel_id": "1465902692101787799",
-  "posted_at": "2026-02-06T09:33:28.374Z"
+  "posted_at": "2026-02-07T00:59:46.691Z"
 }
