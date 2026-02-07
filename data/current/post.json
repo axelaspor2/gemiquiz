@@ -1,22 +1,22 @@
 {
   "quiz": {
-    "id": "pmle-20260207-vertex-ai-tensorboar",
+    "id": "pmle-20260207-ai",
     "exam_code": "PMLE",
     "domain": "チーム内およびチーム間の連携によるデータとモデルの管理",
     "section": "ML テストのトラッキングと実行",
-    "topic": "Vertex AI TensorBoard の活用",
+    "topic": "生成 AI ソリューションの評価",
     "difficulty": "hard",
-    "question": "Vertex AI TensorBoard をカスタム トレーニング ジョブと統合し、チーム内およびチーム間での ML テストのトラッキングを効率化するための手法として、最も適切なものはどれですか？",
+    "question": "あなたは Vertex AI を使用して、既存の本番用 LLM と新しくファインチューニングした LLM の性能を比較しようとしています。評価対象は数千件のプロンプトに及び、推論能力や回答のトーンといった定性的な側面を含めた詳細な比較評価を、限られた人的リソースで迅速かつ大規模に行う必要があります。Google Cloud のベストプラクティスに基づき、最も推奨される評価手法はどれですか？",
     "options": [
-      "Vertex AI TensorBoard インスタンスを事前に作成してトレーニング ジョブに関連付け、スクリプト内で `AIP_TENSORBOARD_LOG_DIR` 環境変数が指すディレクトリにログを書き込む。",
-      "トレーニング スクリプト内に Cloud Storage 書き込み権限を持つサービス アカウントの秘密鍵を直接埋め込み、任意の GCS バケットへ手動でログファイルをアップロードする処理を実装する。",
-      "すべてのプロジェクト メンバーに `roles/storage.admin` ロールを付与し、各自がローカル PC で OSS 版 TensorBoard を起動して共通の GCS バケットに格納されたログを参照する。",
-      "Vertex AI Experiments のコンソールで「自動ログ収集」を有効にすることで、トレーニング スクリプトの標準出力（stdout）からメトリクスを自動的に TensorBoard へ転送する。"
+      "Auto-SxS を使用し、autorater（評価用 LLM）によって 2 つのモデルの回答を直接比較（pairwise evaluation）させ、勝率と判断理由を取得する。",
+      "Rapid Evaluation を使用し、ROUGE や BLEU などの計算ベースの指標を用いて、正解データ（Ground Truth）に対するトークンの重なりを定量的に比較する。",
+      "Vertex AI Model Monitoring を構成し、本番環境での予測データとトレーニングデータの間の特徴量ドリフトを追跡して、モデルの劣化を検知する。",
+      "各モデルに対して個別に Rapid Evaluation を実行し、静的ルーブリック（Static Rubric）を用いて 1-5 のスコアを算出した後、各モデルの平均スコアを比較する。"
     ],
     "correct": 0,
-    "explanation": "正解は 0 です。Vertex AI TensorBoard をカスタム トレーニングと統合する際、Vertex AI は `AIP_TENSORBOARD_LOG_DIR` という環境変数をトレーニング環境に自動的に提供します。このディレクトリにログを書き込むことで、Vertex AI は自動的にログをマネージド TensorBoard インスタンスにストリーミングし、チーム間で共有可能な永続的なリンクを提供します。選択肢 1 はセキュリティ上のリスク（秘密鍵の埋め込み）と運用の手間があるため不適切です。選択肢 2 は最小権限の原則に反し、マネージドな共有機能（永続リンクや IAM 制御）を活用できていないため不適切です。選択肢 3 は、Vertex AI TensorBoard が標準出力から自動的にメトリクスを収集する機能を持っていない（明示的なログ出力が必要）ため誤りです。"
+    "explanation": "モデル間の比較において、定性的な質（推論、トーン等）を大規模かつ迅速に評価するためのベストプラクティスは Auto-SxS (Automatic Side-by-Side) です。Auto-SxS は「autorater」と呼ばれる高性能な LLM が 2 つのモデルの出力を直接比較し、人間が行うのと同等の品質で詳細な理由付きの評価を提供します。計算ベースの指標 (ROUGE/BLEU) は生成 AI の質的な評価には不十分であり、個別スコアリング (pointwise) よりも直接比較 (pairwise) の方がモデル間の微妙な差異を検出するのに優れています。また、Model Monitoring は運用時の監視用であり、開発時のモデル比較には適しません。"
   },
-  "message_id": "1469497837959250004",
+  "message_id": "1469560304743616589",
   "channel_id": "1465902692101787799",
-  "posted_at": "2026-02-07T00:59:46.691Z"
+  "posted_at": "2026-02-07T05:07:59.922Z"
 }
