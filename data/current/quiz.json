@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260209-vertex-ai",
+  "id": "pmle-20260209-gke-kubeflow",
   "exam_code": "PMLE",
   "domain": "プロトタイプの ML モデルへのスケーリング",
   "section": "モデルのトレーニング",
-  "topic": "Vertex AI カスタムトレーニング",
+  "topic": "GKE 上の Kubeflow を使用したトレーニング",
   "difficulty": "easy",
-  "question": "Vertex AI のカスタム トレーニング（Custom Training）の主な特徴として、最も適切なものはどれですか？",
+  "question": "Google Kubernetes Engine (GKE) 上で Kubeflow を使用して TensorFlow モデルの分散トレーニングを実行する場合、Google Cloud が推奨するベストプラクティスはどれですか？",
   "options": [
-    "ユーザーが作成した独自のトレーニング コードを使用し、任意の ML フレームワークやライブラリを柔軟に利用できる。",
-    "コードを記述することなく、Google Cloud コンソール上の操作のみで最適なモデルを自動的に構築する。",
-    "SQL クエリを使用して BigQuery 内で直接機械学習モデルをトレーニングおよびデプロイする。",
-    "トレーニングに使用する仮想マシンのプロビジョニングや OS のパッチ適用を手動で管理する必要がある。"
+    "TFJob カスタムリソースを使用して、トレーニングのライフサイクルと分散構成を管理する。",
+    "標準的な Kubernetes の Deployment を使用して、手動で各 Pod に役割を割り当てる。",
+    "Compute Engine インスタンスに SSH で接続し、各ノードでトレーニングスクリプトを直接実行する。",
+    "App Engine を使用して、トレーニングジョブをスケーラブルなマネージドサービスとしてデプロイする。"
   ],
   "correct": 0,
-  "explanation": "正解は 0 です。Vertex AI のカスタム トレーニングは、独自のトレーニング アプリケーション（Python スクリプトやカスタム コンテナ）を Google Cloud のマネージド インフラストラクチャ上で実行できるサービスです。これにより、特定の ML フレームワークに依存せず、自由度の高いモデル構築が可能になります。選択肢 1 は AutoML、選択肢 2 は BigQuery ML の説明です。選択肢 3 については、Vertex AI はマネージド サービスであるため、基盤となるインフラの管理は Google Cloud が行い、ユーザーが OS の管理などを行う必要はありません。"
+  "explanation": "Kubeflow では、特定の ML フレームワーク（TensorFlow、PyTorch、XGBoost など）に最適化されたカスタムリソース（CRD）を提供しています。TensorFlow の場合、TFJob を使用することで、マスター、ワーカー、パラメータサーバーといった分散構成のセットアップや、トレーニング完了後のリソースの自動クリーンアップを簡単かつ確実に行うことができます。標準の Deployment は長時間実行されるサービス向けであり、バッチ処理であるトレーニングジョブには適していません。Compute Engine や App Engine の使用は、Kubeflow のオーケストレーション機能を活用できないため推奨されません。"
 }
