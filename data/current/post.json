@@ -1,22 +1,22 @@
 {
   "quiz": {
-    "id": "pmle-20260210-vertex-ai-model-gard",
+    "id": "pmle-20260211-cpu-gpu-tpu",
     "exam_code": "PMLE",
     "domain": "プロトタイプの ML モデルへのスケーリング",
-    "section": "モデルのトレーニング",
-    "topic": "基盤モデルのファインチューニング（Vertex AI、Model Garden）",
+    "section": "トレーニングに適したハードウェアの選択",
+    "topic": "CPU・GPU・TPU・エッジデバイスの選択",
     "difficulty": "easy",
-    "question": "Vertex AI Model Garden を使用して基盤モデルのファインチューニングを開始しようとしたところ、トレーニング ジョブがデータの読み取りまたはパースに関連するエラーで即座に失敗しました。トレーニング データは Cloud Storage に CSV 形式で保存されています。この問題を解決するために最初に行うべき修正はどれですか？",
+    "question": "Google Cloud でディープラーニングのワークロード（トレーニングおよび推論）を高速化するために、Google が独自に設計したカスタム ASIC（特定用途向け集積回路）はどれですか？",
     "options": [
-      "トレーニング データを JSONL（JSON Lines）形式に変換し、各行が有効な JSON オブジェクトであることを確認する。",
-      "Cloud Storage の代わりに BigQuery をデータソースとして使用するように構成を変更する。",
-      "トレーニング データのファイル拡張子を .csv から .txt に変更して再アップロードする。",
-      "トレーニング ジョブを実行する前に、データを .zip または .tar.gz 形式で圧縮する。"
+      "Tensor Processing Unit (TPU)",
+      "Graphics Processing Unit (GPU)",
+      "Central Processing Unit (CPU)",
+      "Field Programmable Gate Array (FPGA)"
     ],
     "correct": 0,
-    "explanation": "Vertex AI Model Garden における基盤モデル（Gemini や PaLM 2 など）のファインチューニングでは、トレーニング データの入力形式として一般的に JSONL（JSON Lines）形式が要求されます。CSV 形式はサポートされていないため、パース エラーが発生します。JSONL 形式では、データの各行が独立した有効な JSON オブジェクトである必要があり、モデルやタスクに応じた特定のスキーマ（例：Gemini の場合は 'contents' キーを含む構造）に従う必要があります。"
+    "explanation": "正解は TPU（Tensor Processing Unit）です。TPU は、特に大規模なディープラーニング モデルのトレーニングや処理において高いパフォーマンスと電力効率を発揮するように Google が専用設計したアクセラレータです。GPU は汎用的な並列計算に適しており、CPU はデータの前処理や一般的な計算タスクに使用されます。FPGA は再構成可能な集積回路ですが、Google Cloud の ML ワークロード向け専用設計ハードウェアとしては TPU が該当します。"
   },
-  "message_id": "1470718327616700592",
+  "message_id": "1470951428712304825",
   "channel_id": "1465902692101787799",
-  "posted_at": "2026-02-10T09:49:34.013Z"
+  "posted_at": "2026-02-11T01:15:49.952Z"
 }
