@@ -1,22 +1,22 @@
 {
   "quiz": {
-    "id": "pmle-20260211-tpu-gpu",
+    "id": "pmle-20260211-vertex-ai-reduction-",
     "exam_code": "PMLE",
     "domain": "プロトタイプの ML モデルへのスケーリング",
     "section": "トレーニングに適したハードウェアの選択",
-    "topic": "TPU と GPU を使用した分散トレーニング",
+    "topic": "Vertex AI 上の Reduction Server",
     "difficulty": "easy",
-    "question": "Cloud TPU を使用して分散トレーニングを行う際、ハードウェアの計算能力を最大限に活用し、メモリ効率を向上させるためのベストプラクティスはどれですか？",
+    "question": "Vertex AI で NVIDIA GPU を使用したマルチノード分散トレーニングを実行しています。ネットワーク帯域のボトルネックを解消し、オールリデュース（all-reduce）操作を高速化するために Reduction Server を導入しようとしていますが、期待通りに機能していません。構成を確認したところ、workerPoolSpecs[0] と workerPoolSpecs[1] には適切な GPU マシンとトレーニング用コンテナが設定されていました。Reduction Server を正しく有効にするために不足している設定はどれですか？",
     "options": [
-      "bfloat16 を使用した混合精度トレーニングを有効にする",
-      "計算の正確性を担保するために、すべての行列演算に float64（倍精度）を使用する",
-      "ホスト CPU のリソースを節約するため、データのプリフェッチ（prefetch）を無効にする",
-      "メモリ不足を回避するため、バッチサイズを可能な限り小さく（例：1）設定する"
+      "workerPoolSpecs[2] を追加し、専用の Reduction Server コンテナイメージを指定したワーカーを配置する。",
+      "すべてのワーカーノードで、環境変数として REDUCTION_SERVER_OPTIMIZE=TRUE を設定する。",
+      "workerPoolSpecs[0] のマシンタイプを、GPU を搭載していない大容量メモリの n1-highmem-96 に変更する。",
+      "トレーニングコード内で、分散戦略（Distribution Strategy）を ParameterServerStrategy に明示的に変更する。"
     ],
     "correct": 0,
-    "explanation": "Cloud TPU は bfloat16 形式の演算に最適化されており、混合精度トレーニングを使用することで、精度を維持しながらトレーニングを大幅に高速化し、メモリ消費を抑えることができます。これは Google Cloud が推奨する主要なパフォーマンス最適化手法です。一方、float64 は計算負荷が非常に高く TPU に適していません。また、TPU は計算速度が非常に速いため、プリフェッチを無効にしたりバッチサイズを小さくしすぎたりすると、データの供給が追いつかず TPU がアイドル状態になり、パフォーマンスが著しく低下します。"
+    "explanation": "Vertex AI で Reduction Server を有効にするには、3番目のワーカープール（workerPoolSpecs[2]）を構成し、Google が提供する専用の Reduction Server コンテナイメージ（例: us-docker.pkg.dev/vertex-ai-restricted/training/reductionserver:latest）を指定する必要があります。このプール内のノードは「リデューサー」として機能し、GPU ノード間の勾配集約を最適化します。環境変数の設定だけでは有効になりません。また、Reduction Server はオールリデュース操作を最適化するものであり、ParameterServerStrategy（パラメータサーバー戦略）とは異なるアーキテクチャです。"
   },
-  "message_id": "1471015184242835585",
+  "message_id": "1471078888439549983",
   "channel_id": "1465902692101787799",
-  "posted_at": "2026-02-11T05:29:10.190Z"
+  "posted_at": "2026-02-11T09:42:18.447Z"
 }
