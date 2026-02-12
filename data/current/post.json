@@ -1,22 +1,22 @@
 {
   "quiz": {
-    "id": "pmle-20260211-vertex-ai-reduction-",
+    "id": "pmle-20260212-horovod",
     "exam_code": "PMLE",
     "domain": "プロトタイプの ML モデルへのスケーリング",
     "section": "トレーニングに適したハードウェアの選択",
-    "topic": "Vertex AI 上の Reduction Server",
-    "difficulty": "easy",
-    "question": "Vertex AI で NVIDIA GPU を使用したマルチノード分散トレーニングを実行しています。ネットワーク帯域のボトルネックを解消し、オールリデュース（all-reduce）操作を高速化するために Reduction Server を導入しようとしていますが、期待通りに機能していません。構成を確認したところ、workerPoolSpecs[0] と workerPoolSpecs[1] には適切な GPU マシンとトレーニング用コンテナが設定されていました。Reduction Server を正しく有効にするために不足している設定はどれですか？",
+    "topic": "Horovod を使用した分散トレーニング",
+    "difficulty": "medium",
+    "question": "Vertex AI でコスト効率を高めるために Spot VM を活用して分散トレーニングを行う際、一部のノードが停止（プリエンプション）してもトレーニングを中断することなく、動的にワーカー数を調整して継続できる Horovod の機能（概念）はどれですか？",
     "options": [
-      "workerPoolSpecs[2] を追加し、専用の Reduction Server コンテナイメージを指定したワーカーを配置する。",
-      "すべてのワーカーノードで、環境変数として REDUCTION_SERVER_OPTIMIZE=TRUE を設定する。",
-      "workerPoolSpecs[0] のマシンタイプを、GPU を搭載していない大容量メモリの n1-highmem-96 に変更する。",
-      "トレーニングコード内で、分散戦略（Distribution Strategy）を ParameterServerStrategy に明示的に変更する。"
+      "Elastic Horovod",
+      "Horovod Tensor Fusion",
+      "Horovod Timeline",
+      "Horovod Broadcast"
     ],
     "correct": 0,
-    "explanation": "Vertex AI で Reduction Server を有効にするには、3番目のワーカープール（workerPoolSpecs[2]）を構成し、Google が提供する専用の Reduction Server コンテナイメージ（例: us-docker.pkg.dev/vertex-ai-restricted/training/reductionserver:latest）を指定する必要があります。このプール内のノードは「リデューサー」として機能し、GPU ノード間の勾配集約を最適化します。環境変数の設定だけでは有効になりません。また、Reduction Server はオールリデュース操作を最適化するものであり、ParameterServerStrategy（パラメータサーバー戦略）とは異なるアーキテクチャです。"
+    "explanation": "Elastic Horovod は、トレーニングの実行中にワーカーの追加や削除を動的に行うことができる Horovod の拡張機能です。これにより、Spot VM の回収によってノードが減少した場合や、逆に新しいノードが追加された場合でも、ジョブを停止したりチェックポイントから手動で再起動したりすることなく、トレーニングを継続できます。\n\n他の選択肢が不正解の理由:\n- **Horovod Tensor Fusion**: 多数の小さな勾配（テンソル）を 1 つのバッファにまとめて通信回数を減らす、通信効率向上のための機能です。\n- **Horovod Timeline**: トレーニング中の各ステップにおける通信や計算の時間経過を可視化し、ボトルネックを特定するためのプロファイリングツールです。\n- **Horovod Broadcast**: トレーニング開始時に、あるランク（通常はランク0）の状態を他のすべてのランクにコピーして初期状態を同期するための操作です。"
   },
-  "message_id": "1471078888439549983",
+  "message_id": "1471311118222753805",
   "channel_id": "1465902692101787799",
-  "posted_at": "2026-02-11T09:42:18.447Z"
+  "posted_at": "2026-02-12T01:05:06.381Z"
 }
