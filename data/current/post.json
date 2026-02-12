@@ -1,22 +1,22 @@
 {
   "quiz": {
-    "id": "pmle-20260212-",
+    "id": "pmle-20260212-vertex-ai",
     "exam_code": "PMLE",
     "domain": "モデルの提供とスケーリング",
     "section": "モデルの提供",
-    "topic": "バッチ推論とオンライン推論の選択",
+    "topic": "Vertex AI でのモデル提供",
     "difficulty": "medium",
-    "question": "ある小売企業は、1,000万人の顧客に対して、週に一度のプロモーションメールを送るための離脱予測スコアを算出しようとしています。対象となるデータはBigQueryに保存されており、リアルタイムの応答は必要ありません。Google Cloudのベストプラクティスに基づき、最も効率的かつコスト効率の高い予測方法はどれですか？",
+    "question": "Vertex AI Endpoint にカスタムコンテナを使用したモデルをデプロイしましたが、一部の予測リクエストに対して '500 Internal Server Error' が返されます。Google Cloud コンソールの画面上ではエラーの詳細は確認できません。コンテナ内で発生している具体的な Python 例外やスタックトレースを調査するために、Cloud Logging で最初に行うべきアクションはどれですか？",
     "options": [
-      "Vertex AI Batch Predictionを使用し、BigQueryをデータソースおよび出力先として指定する。",
-      "Vertex AI Endpointにモデルをデプロイし、Cloud Dataflowからストリーミングで予測リクエストを送信する。",
-      "Vertex AI Endpointにモデルをデプロイし、Python SDKを使用して各レコードに対して個別にオンライン予測を実行する。",
-      "Vertex AI Model Registryからモデルをダウンロードし、Compute Engine上で独自の推論サーバーを構築して処理する。"
+      "resource.type=\"aiplatform.googleapis.com/Endpoint\" を指定して、コンテナの stdout や stderr ログをフィルタリングする。",
+      "resource.type=\"ai_platform_model\" を指定して、モデルのメタデータ更新ログを確認する。",
+      "Cloud Storage のモデルアーティファクト保存先にある logs/ ディレクトリ内のテキストファイルを確認する。",
+      "Vertex AI Dashboard の「予測レイテンシ」メトリクスを確認し、エラーが発生したインスタンスを特定する。"
     ],
     "correct": 0,
-    "explanation": "このシナリオでは、大規模なデータセット（1,000万人分）を週に一度、非同期で処理することが求められています。Vertex AI Batch Predictionは、即時性を必要としない大量のデータを一括処理するのに最適であり、BigQueryと直接統合して効率的に処理できるため、コスト効率と運用効率の両面でベストプラクティスです。オンライン予測（選択肢B、C）は低レイテンシのリアルタイム応答には適していますが、大規模なバッチ処理に使用するとスロットリングやコスト増大、エンドポイント管理のオーバーヘッドが発生します。独自のサーバー構築（選択肢D）は、マネージドサービスの利点を損ない、運用負荷が高くなります。"
+    "explanation": "Vertex AI のオンライン予測では、デプロイされたコンテナの標準出力 (stdout) および標準エラー出力 (stderr) は自動的に Cloud Logging に転送されます。これらのログは `aiplatform.googleapis.com/Endpoint` というリソースタイプで管理されており、コンテナ内でのランタイムエラーや例外を特定するために最も重要な情報源となります。他の選択肢について、`ai_platform_model` は旧世代の AI Platform のリソースであり、Cloud Storage にログが自動出力されるわけではなく、メトリクスはエラーの発生事象は示しますが具体的な原因（スタックトレースなど）を特定するものではありません。"
   },
-  "message_id": "1471377919480823828",
+  "message_id": "1471440249870745787",
   "channel_id": "1465902692101787799",
-  "posted_at": "2026-02-12T05:30:33.054Z"
+  "posted_at": "2026-02-12T09:38:13.772Z"
 }
