@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260213-dataflow",
+  "id": "pmle-20260213-bigquery-ml",
   "exam_code": "PMLE",
   "domain": "モデルの提供とスケーリング",
   "section": "モデルの提供",
-  "topic": "Dataflow を使用したバッチ推論",
+  "topic": "BigQuery ML を使用した推論",
   "difficulty": "medium",
-  "question": "Google Cloud の Dataflow を使用して大規模なデータセットに対し機械学習モデルのバッチ推論を実行する際、推論処理の最適化、モデルの効率的なロード、および技術的負債の軽減を実現するために推奨される Apache Beam の機能（PTransform）はどれですか？",
+  "question": "テラバイト単位のデータが BigQuery に保存されており、外部でトレーニングされた深層学習モデルを使用してバッチ予測を行う必要があります。このモデルは 1 GB 以上のサイズがあり、推論の実行には GPU アクセラレーションが必要です。運用オーバーヘッドとデータパイプラインの複雑さを最小限に抑えるための、最も適切なアプローチはどれですか？",
   "options": [
-    "RunInference",
-    "MapElements",
-    "GroupByKey",
-    "CoGroupByKey"
+    "モデルを TensorFlow SavedModel 形式で BigQuery ML に直接インポートし、ML.PREDICT を使用する。",
+    "Vertex AI エンドポイントにモデルをデプロイし、BigQuery ML のリモートモデルを作成して ML.PREDICT を使用する。",
+    "BigQuery データを外部テーブルとして定義し、Cloud Functions を使用して各行の予測を順次実行する。",
+    "Dataflow を使用して BigQuery からデータを抽出し、Vertex AI Batch Prediction ジョブを実行して結果を BigQuery に書き戻す。"
   ],
-  "correct": 0,
-  "explanation": "正解は RunInference です。RunInference は Apache Beam に統合された PTransform で、推論パイプラインにおけるモデルの管理、効率的なデータのバッチ処理、およびハードウェアアクセラレータの最適化を自動的に行います。これにより、ユーザーはモデルの読み込みやバッチ処理の複雑なロジックを手動で実装する必要がなくなり、高いスループットでの処理が可能になります。MapElements は汎用的な変換に使用されますが推論特有の最適化機能を持たず、GroupByKey や CoGroupByKey はデータの集計や結合を目的とした機能であるため、推論処理の最適化という観点では RunInference が最適解となります。"
+  "correct": 1,
+  "explanation": "正解は B です。Google Cloud のベストプラクティスでは、BigQuery に直接インポートするには大きすぎるモデル（通常 450MB 以上）や、GPU などの専用ハードウェアが必要なモデルを使用して BigQuery 内のデータに推論を行う場合、Vertex AI 上のリモートモデルを使用することが推奨されます。これにより、SQL インターフェースを維持したまま Vertex AI の計算リソースを活用でき、複雑なデータパイプラインを構築する必要がなくなります。A はモデルサイズと GPU 要件により制限されます。C と D は実装と運用の複雑さが増し、データ移動のオーバーヘッドが発生するため、このシナリオでは最適ではありません。"
 }
