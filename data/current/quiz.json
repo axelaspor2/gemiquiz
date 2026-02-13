@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260212-vertex-ai",
+  "id": "pmle-20260213-dataflow",
   "exam_code": "PMLE",
   "domain": "モデルの提供とスケーリング",
   "section": "モデルの提供",
-  "topic": "Vertex AI でのモデル提供",
+  "topic": "Dataflow を使用したバッチ推論",
   "difficulty": "medium",
-  "question": "Vertex AI Endpoint にカスタムコンテナを使用したモデルをデプロイしましたが、一部の予測リクエストに対して '500 Internal Server Error' が返されます。Google Cloud コンソールの画面上ではエラーの詳細は確認できません。コンテナ内で発生している具体的な Python 例外やスタックトレースを調査するために、Cloud Logging で最初に行うべきアクションはどれですか？",
+  "question": "Google Cloud の Dataflow を使用して大規模なデータセットに対し機械学習モデルのバッチ推論を実行する際、推論処理の最適化、モデルの効率的なロード、および技術的負債の軽減を実現するために推奨される Apache Beam の機能（PTransform）はどれですか？",
   "options": [
-    "resource.type=\"aiplatform.googleapis.com/Endpoint\" を指定して、コンテナの stdout や stderr ログをフィルタリングする。",
-    "resource.type=\"ai_platform_model\" を指定して、モデルのメタデータ更新ログを確認する。",
-    "Cloud Storage のモデルアーティファクト保存先にある logs/ ディレクトリ内のテキストファイルを確認する。",
-    "Vertex AI Dashboard の「予測レイテンシ」メトリクスを確認し、エラーが発生したインスタンスを特定する。"
+    "RunInference",
+    "MapElements",
+    "GroupByKey",
+    "CoGroupByKey"
   ],
   "correct": 0,
-  "explanation": "Vertex AI のオンライン予測では、デプロイされたコンテナの標準出力 (stdout) および標準エラー出力 (stderr) は自動的に Cloud Logging に転送されます。これらのログは `aiplatform.googleapis.com/Endpoint` というリソースタイプで管理されており、コンテナ内でのランタイムエラーや例外を特定するために最も重要な情報源となります。他の選択肢について、`ai_platform_model` は旧世代の AI Platform のリソースであり、Cloud Storage にログが自動出力されるわけではなく、メトリクスはエラーの発生事象は示しますが具体的な原因（スタックトレースなど）を特定するものではありません。"
+  "explanation": "正解は RunInference です。RunInference は Apache Beam に統合された PTransform で、推論パイプラインにおけるモデルの管理、効率的なデータのバッチ処理、およびハードウェアアクセラレータの最適化を自動的に行います。これにより、ユーザーはモデルの読み込みやバッチ処理の複雑なロジックを手動で実装する必要がなくなり、高いスループットでの処理が可能になります。MapElements は汎用的な変換に使用されますが推論特有の最適化機能を持たず、GroupByKey や CoGroupByKey はデータの集計や結合を目的とした機能であるため、推論処理の最適化という観点では RunInference が最適解となります。"
 }
