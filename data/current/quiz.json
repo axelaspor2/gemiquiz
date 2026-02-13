@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260213-bigquery-ml",
+  "id": "pmle-20260213-pytorch-xgboost",
   "exam_code": "PMLE",
   "domain": "モデルの提供とスケーリング",
   "section": "モデルの提供",
-  "topic": "BigQuery ML を使用した推論",
+  "topic": "PyTorch・XGBoost を使用したモデル提供",
   "difficulty": "medium",
-  "question": "テラバイト単位のデータが BigQuery に保存されており、外部でトレーニングされた深層学習モデルを使用してバッチ予測を行う必要があります。このモデルは 1 GB 以上のサイズがあり、推論の実行には GPU アクセラレーションが必要です。運用オーバーヘッドとデータパイプラインの複雑さを最小限に抑えるための、最も適切なアプローチはどれですか？",
+  "question": "Vertex AI のプリビルドコンテナを使用して PyTorch モデルをデプロイしようとしています。モデルアーカイブファイル（.mar）を Cloud Storage の `gs://my-bucket/models/` に `pytorch_model.mar` という名前で保存し、モデルリソースの `artifactUri` にこのディレクトリを指定して登録しました。しかし、エンドポイントへのデプロイが失敗し、Cloud Logging を確認したところ、TorchServe がモデルファイルを検出できなかったために発生したエラーであることが判明しました。この問題を解決するために適切な対処法はどれですか？",
   "options": [
-    "モデルを TensorFlow SavedModel 形式で BigQuery ML に直接インポートし、ML.PREDICT を使用する。",
-    "Vertex AI エンドポイントにモデルをデプロイし、BigQuery ML のリモートモデルを作成して ML.PREDICT を使用する。",
-    "BigQuery データを外部テーブルとして定義し、Cloud Functions を使用して各行の予測を順次実行する。",
-    "Dataflow を使用して BigQuery からデータを抽出し、Vertex AI Batch Prediction ジョブを実行して結果を BigQuery に書き戻す。"
+    "Cloud Storage 上のファイル名を `model.mar` に変更し、モデルを再登録してデプロイを再試行する。",
+    "モデル登録時の `artifactUri` を、ディレクトリではなくファイルへの直接パス（`gs://my-bucket/models/pytorch_model.mar`）に変更する。",
+    "デプロイ時の環境変数として `MODEL_NAME=pytorch_model` を設定し、TorchServe にファイル名を明示的に伝える。",
+    "プリビルドコンテナは .mar 形式をサポートしていないため、モデルを .pt 形式で保存し直してアップロードする。"
   ],
-  "correct": 1,
-  "explanation": "正解は B です。Google Cloud のベストプラクティスでは、BigQuery に直接インポートするには大きすぎるモデル（通常 450MB 以上）や、GPU などの専用ハードウェアが必要なモデルを使用して BigQuery 内のデータに推論を行う場合、Vertex AI 上のリモートモデルを使用することが推奨されます。これにより、SQL インターフェースを維持したまま Vertex AI の計算リソースを活用でき、複雑なデータパイプラインを構築する必要がなくなります。A はモデルサイズと GPU 要件により制限されます。C と D は実装と運用の複雑さが増し、データ移動のオーバーヘッドが発生するため、このシナリオでは最適ではありません。"
+  "correct": 0,
+  "explanation": "Vertex AI の PyTorch 用プリビルドコンテナでは、サービングエンジンとして TorchServe が使用されており、モデルアーカイブファイルの名前が `model.mar` であることが仕様として定められています。ファイル名が `pytorch_model.mar` のように異なっていると、TorchServe が起動時にモデルをロードできず、デプロイエラーが発生します。また、`artifactUri` はモデルファイルが格納されているディレクトリを指定する必要があり、ファイルへのフルパスを指定することはできません。他の選択肢については、環境変数でのファイル名指定はプリビルドコンテナの標準仕様ではサポートされておらず、.mar 形式は PyTorch プリビルドコンテナで必須の形式です。"
 }
