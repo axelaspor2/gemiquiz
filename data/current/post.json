@@ -4,19 +4,19 @@
     "exam_code": "PMLE",
     "domain": "モデルの提供とスケーリング",
     "section": "オンラインモデルサービングのスケーリング",
-    "topic": "スループットに基づくサービスバックエンドのスケーリング",
+    "topic": "本番環境でのモデル最適化（レイテンシ、メモリ、スループット）",
     "difficulty": "easy",
-    "question": "Vertex AI のオンライン予測において、スループット（1分あたりのリクエスト数）に基づいてエンドポイントのインスタンス（レプリカ）数を自動的にスケーリングするために使用されるメトリックはどれですか？",
+    "question": "オンライン予測サービスにおいて、モデルの精度への影響を最小限に抑えつつ、推論時のレイテンシ（応答時間）を短縮し、メモリ使用量を削減するために推奨される手法はどれですか？",
     "options": [
-      "aiplatform.googleapis.com/prediction/online/request_count",
-      "aiplatform.googleapis.com/prediction/online/cpu/utilization",
-      "aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle",
-      "aiplatform.googleapis.com/prediction/online/concurrency"
+      "モデルの量子化（Quantization）を適用する",
+      "推論時のバッチサイズを大きく設定する",
+      "トレーニングデータの量を増やして再学習する",
+      "モデルの層の数を増やして複雑にする"
     ],
     "correct": 0,
-    "explanation": "Vertex AI のオンライン予測におけるオートスケーリングでは、デフォルトで CPU 使用率（cpu/utilization）が使用されますが、特定のメトリックを指定してカスタマイズすることも可能です。スループットに基づくスケーリングには `request_count` メトリックを使用し、これは「レプリカあたりの1分あたりのリクエスト数」を基準にスケーリングを決定します。他の選択肢について、`cpu/utilization` は CPU 使用率、`accelerator/duty_cycle` は GPU のデューティ サイクル（使用率）に基づくものです。`concurrency` は Cloud Run などで使用される同時実行数に関連する概念ですが、Vertex AI の標準的なオートスケーリングメトリック名ではありません。"
+    "explanation": "モデルの量子化は、重みや活性化関数の精度を（例：32ビット浮動小数点から8ビット整数へ）変換することで、モデルサイズを縮小し、計算量を減らして推論を高速化する手法です。これにより、レイテンシとメモリ使用量の両方を改善できます。推論時のバッチサイズを大きくすると、システム全体のスループットは向上しますが、個々のリクエストのレイテンシは増加するため、オンライン予測のレイテンシ改善には適しません。他の選択肢は学習時の精度向上や複雑化に関するものであり、推論の最適化には寄与しません。"
   },
-  "message_id": "1472760718091620444",
+  "message_id": "1472827146006167716",
   "channel_id": "1465902692101787799",
-  "posted_at": "2026-02-16T01:05:17.832Z"
+  "posted_at": "2026-02-16T05:29:15.582Z"
 }
