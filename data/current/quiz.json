@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260215-cpu-gpu-tpu",
+  "id": "pmle-20260216-",
   "exam_code": "PMLE",
   "domain": "モデルの提供とスケーリング",
   "section": "オンラインモデルサービングのスケーリング",
-  "topic": "サービング用ハードウェアの選択（CPU、GPU、TPU）",
-  "difficulty": "hard",
-  "question": "あなたは Vertex AI 上で、大規模なエンベディング テーブルを使用したレコメンデーション モデルのオンライン予測サービスを運用しています。パフォーマンス プロファイリングの結果、推論時間の大部分がエンベディング ルックアップ（疎な行列演算）におけるメモリ帯域幅の待機に費やされており、GPU の計算リソース（CUDA コア）の利用率が極めて低いことが判明しました。現在の NVIDIA L4 GPU インスタンスから、このボトルネックを解消しつつコスト効率を最大化するハードウェア構成へ移行する場合、最も適切な選択肢はどれですか？",
+  "topic": "スループットに基づくサービスバックエンドのスケーリング",
+  "difficulty": "easy",
+  "question": "Vertex AI のオンライン予測において、スループット（1分あたりのリクエスト数）に基づいてエンドポイントのインスタンス（レプリカ）数を自動的にスケーリングするために使用されるメトリックはどれですか？",
   "options": [
-    "メモリ帯域幅の制約を緩和するために、より広帯域な HBM2 を搭載した NVIDIA A100 GPU にアップグレードする。",
-    "エンベディング操作を高速化するために設計された専用のアクセラレータ「SparseCore」を搭載した Cloud TPU v5e を選択する。",
-    "データ転送のオーバーヘッドを削減するために、ホスト CPU と GPU 間の帯域幅が広い次世代の G2 インスタンスにスケールアップする。",
-    "行列演算の最適化機能（Intel AMX）を活用するために、アクセラレータを廃止して第 4 世代 Intel Xeon プロセッサ（C3 インスタンス）のみで構成する。"
+    "aiplatform.googleapis.com/prediction/online/request_count",
+    "aiplatform.googleapis.com/prediction/online/cpu/utilization",
+    "aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle",
+    "aiplatform.googleapis.com/prediction/online/concurrency"
   ],
-  "correct": 1,
-  "explanation": "正解は B です。Cloud TPU v5e（および v4 以降）には、レコメンデーション システムで頻繁に使用されるエンベディング（埋め込み）操作などの疎な（Sparse）演算を高速化するための専用ハードウェア「SparseCore」が搭載されています。SparseCore は、巨大なエンベディング テーブルからのデータ収集（gather）や更新を、メインの計算ユニット（TensorCore）からオフロードして効率的に処理するため、メモリ帯域幅のボトルネックを解消するのに最適です。A も帯域幅は向上しますが、SparseCore のような専用の最適化ほど劇的な効率向上は見込めません。C はホスト通信の改善であり、GPU 内部のメモリ帯域幅問題の解決にはなりません。D の Intel AMX は CPU での推論を高速化しますが、大規模なレコメンデーション モデルの疎な演算においては、SparseCore を搭載した TPU の方が圧倒的に高いスループットを提供します。"
+  "correct": 0,
+  "explanation": "Vertex AI のオンライン予測におけるオートスケーリングでは、デフォルトで CPU 使用率（cpu/utilization）が使用されますが、特定のメトリックを指定してカスタマイズすることも可能です。スループットに基づくスケーリングには `request_count` メトリックを使用し、これは「レプリカあたりの1分あたりのリクエスト数」を基準にスケーリングを決定します。他の選択肢について、`cpu/utilization` は CPU 使用率、`accelerator/duty_cycle` は GPU のデューティ サイクル（使用率）に基づくものです。`concurrency` は Cloud Run などで使用される同時実行数に関連する概念ですが、Vertex AI の標準的なオートスケーリングメトリック名ではありません。"
 }
