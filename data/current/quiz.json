@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260217-mlflow",
+  "id": "pmle-20260217-cloud-build",
   "exam_code": "PMLE",
   "domain": "ML パイプラインの自動化とオーケストレーション",
   "section": "エンドツーエンドの ML パイプライン開発",
-  "topic": "MLFlow のホスティング",
+  "topic": "Cloud Build を使用したパイプライン構築",
   "difficulty": "easy",
-  "question": "Google CloudでMLflowをホスティングする際、運用管理の負担を軽減しつつ、リクエストに応じた自動スケーリングとコスト最適化を実現するために推奨される構成はどれですか？",
+  "question": "Cloud Build を使用して Vertex AI Pipelines をトリガーする ML パイプラインの自動化を構築しました。しかし、ビルドの実行中に Vertex AI リソースの作成ステップで `PERMISSION_DENIED` エラーが発生しました。この問題を解決するために最初に確認すべき点はどれですか？",
   "options": [
-    "Compute Engine インスタンスをデプロイしてMLflowをインストールし、ローカルSSDをバックエンドストアおよびアーティファクトストアとして使用する。",
-    "Cloud Run でトラッキングサーバーを稼働させ、バックエンドストアに Cloud SQL、アーティファクトストアに Cloud Storage を使用する。",
-    "Google Kubernetes Engine (GKE) クラスターを構築し、共有ファイルシステムとして Filestore をバックエンドストアとアーティファクトストアの両方に使用する。",
-    "Cloud Functions でトラッキングサーバーの機能を実装し、バックエンドストアに Firestore、アーティファクトストアに Cloud Storage を使用する。"
+    "Cloud Build サービスアカウントに必要な IAM ロール（Vertex AI ユーザーなど）が付与されているか。",
+    "プロジェクトで Cloud Build API が有効化されているか。",
+    "cloudbuild.yaml ファイルの構文にインデントの誤りがないか。",
+    "ビルドのタイムアウト設定が短すぎてジョブが強制終了されていないか。"
   ],
-  "correct": 1,
-  "explanation": "Google CloudにおけるMLflowホスティングのベストプラクティスは、コンポーネントごとに最適なマネージドサービスを組み合わせることです。1.トラッキングサーバー：サーバーレスの Cloud Run を使用することで、リクエストに応じた自動スケーリングが可能になり、アイドル時のコストを最小限に抑えられます。2.バックエンドストア：実験のパラメータやメトリクス（メタデータ）を保存するために、マネージドなリレーショナルデータベースである Cloud SQL（PostgreSQL等）が推奨されます。3.アーティファクトストア：モデルの重みやプロット等のファイルを保存するために、スケーラビリティと耐久性に優れた Cloud Storage が最適です。他の選択肢は、管理負荷が高い（Compute Engine）、構成が複雑でコストが高くなりやすい（GKE/Filestore）、あるいはMLflowの標準的な仕様に適合しない（Cloud Functions/Firestore）ため、最適ではありません。"
+  "correct": 0,
+  "explanation": "Cloud Build が Vertex AI などの他の Google Cloud サービスを操作する場合、Cloud Build サービスアカウント（[PROJECT_NUMBER]@cloudbuild.gserviceaccount.com）にそのサービスを利用するための適切な IAM 権限が必要です。`PERMISSION_DENIED` エラーは、呼び出し元に必要な権限がないことを示しています。API が無効な場合は別のエラーメッセージが表示され、構文エラーはビルドの開始前に検証で失敗することが多く、タイムアウトは権限エラーとは異なるエラー（Deadline Exceeded など）を発生させます。"
 }
