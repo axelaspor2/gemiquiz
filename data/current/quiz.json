@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260217-cloud-build",
+  "id": "pmle-20260218-cloud-run",
   "exam_code": "PMLE",
   "domain": "ML パイプラインの自動化とオーケストレーション",
   "section": "エンドツーエンドの ML パイプライン開発",
-  "topic": "Cloud Build を使用したパイプライン構築",
+  "topic": "Cloud Run を使用したパイプライン構築",
   "difficulty": "easy",
-  "question": "Cloud Build を使用して Vertex AI Pipelines をトリガーする ML パイプラインの自動化を構築しました。しかし、ビルドの実行中に Vertex AI リソースの作成ステップで `PERMISSION_DENIED` エラーが発生しました。この問題を解決するために最初に確認すべき点はどれですか？",
+  "question": "Google Cloud 上で機械学習（ML）パイプラインを構築する際、モデルの推論エンドポイントとして Cloud Run を選択する主な利点は何ですか？",
   "options": [
-    "Cloud Build サービスアカウントに必要な IAM ロール（Vertex AI ユーザーなど）が付与されているか。",
-    "プロジェクトで Cloud Build API が有効化されているか。",
-    "cloudbuild.yaml ファイルの構文にインデントの誤りがないか。",
-    "ビルドのタイムアウト設定が短すぎてジョブが強制終了されていないか。"
+    "リクエストに応じて自動的にスケーリングし、アイドル時にはゼロまで縮小するためコスト効率が高い。",
+    "ハイパーパラメータのチューニングを自動化し、最適なモデル構成を提案する機能がある。",
+    "データセットのクリーニングや特徴量エンジニアリングを行うための分散処理専用エンジンである。",
+    "パイプライン内の各ステップの依存関係を管理し、実行順序を制御するオーケストレーション専用ツールである。"
   ],
   "correct": 0,
-  "explanation": "Cloud Build が Vertex AI などの他の Google Cloud サービスを操作する場合、Cloud Build サービスアカウント（[PROJECT_NUMBER]@cloudbuild.gserviceaccount.com）にそのサービスを利用するための適切な IAM 権限が必要です。`PERMISSION_DENIED` エラーは、呼び出し元に必要な権限がないことを示しています。API が無効な場合は別のエラーメッセージが表示され、構文エラーはビルドの開始前に検証で失敗することが多く、タイムアウトは権限エラーとは異なるエラー（Deadline Exceeded など）を発生させます。"
+  "explanation": "Cloud Run は、コンテナ化されたアプリケーションをサーバーレスで実行できるプラットフォームです。主な利点は、リクエスト数に基づいて自動的にスケーリングし、リクエストがない場合はインスタンスをゼロにできる（スケールトゥゼロ）点にあり、断続的な推論リクエストが発生する ML ワークロードにおいて非常にコスト効率が高くなります。\n他の選択肢について：\n・「ハイパーパラメータのチューニング」は Vertex AI Vizier などの機能です。\n・「分散処理専用エンジン」は Dataflow や Dataproc の特徴です。\n・「オーケストレーション専用ツール」は Vertex AI Pipelines や Cloud Composer の役割です。"
 }
