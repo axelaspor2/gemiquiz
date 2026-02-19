@@ -1,22 +1,22 @@
 {
   "quiz": {
-    "id": "pmle-20260218-vertex-ai-pipelines",
+    "id": "pmle-20260219-cloud-composer",
     "exam_code": "PMLE",
     "domain": "ML パイプラインの自動化とオーケストレーション",
     "section": "エンドツーエンドの ML パイプライン開発",
-    "topic": "Vertex AI Pipelines の活用",
-    "difficulty": "easy",
-    "question": "Vertex AI Pipelines でカスタムコンポーネントの Python コードを修正し、Docker イメージを同じタグ（例: `latest`）で Artifact Registry に再プッシュしました。しかし、パイプラインを再実行したところ、修正内容が反映されず、更新前と同じ実行結果が返されました。この問題を解決し、確実に新しいコードを実行させるための最も適切な方法はどれですか？",
+    "topic": "Cloud Composer の活用",
+    "difficulty": "medium",
+    "question": "Google Cloud において、ML パイプラインのオーケストレーションに Cloud Composer を活用する際の主な特徴として正しいものはどれですか？",
     "options": [
-      "パイプライン実行時、または該当するコンポーネントに対してキャッシュを無効（enable_caching=False）にする。",
-      "Artifact Registry のイメージを一度削除してから、同じタグで再度プッシュする。",
-      "コンポーネントの `machine_type` をより高性能なものに変更して、実行環境をリセットする。",
-      "Cloud Storage に保存されている以前の実行ログをすべて削除する。"
+      "Python で記述された Directed Acyclic Graphs (DAGs) を使用して、Google Cloud 内外のサービスを組み合わせた複雑なワークフローを定義・管理できる。",
+      "サーバーレスな環境でコンテナ化された ML コンポーネントを実行し、モデルのアーティファクトとメタデータを自動的に追跡することに特化している。",
+      "AutoML 機能を提供し、コードを記述することなくデータセットから最適な機械学習モデルを自動的に構築・デプロイできる。",
+      "リアルタイムのデータストリーミング処理に特化しており、低レイテンシでモデルの推論結果を返すための専用エンジンとして機能する。"
     ],
     "correct": 0,
-    "explanation": "Vertex AI Pipelines は、パイプラインの実行を高速化しコストを抑えるために、デフォルトでキャッシュ機能が有効になっています。キャッシュが利用されるかどうかを判断する「キャッシュキー」には、入力パラメータやコンポーネントの定義（Docker イメージの URI とタグを含む）が含まれます。イメージの内容を更新してもタグを変更しない場合、Vertex AI はコンポーネントが変更されていないと判断し、以前の実行結果を再利用してしまいます。このため、キャッシュを明示的に無効にするか、イメージに新しいタグを付与してキャッシュキーを更新する必要があります。"
+    "explanation": "Cloud Composer は、Apache Airflow をベースとしたフルマネージドなワークフローオーケストレーションサービスです。Python で記述された DAG（有向非巡回グラフ）を使用して、データ準備からモデルのトレーニング、デプロイに至るまで、Google Cloud サービス（BigQuery、Vertex AI など）やオンプレミス、他のクラウドをまたぐ複雑な ML ワークフローを柔軟にスケジュール・管理できるのが特徴です。選択肢 1 が正解です。選択肢 2 は Vertex AI Pipelines の特徴、選択肢 3 は Vertex AI AutoML の特徴、選択肢 4 は Dataflow や Vertex AI Prediction などの特徴を説明しており、Cloud Composer の主な概念とは異なります。"
   },
-  "message_id": "1473614252299522130",
+  "message_id": "1473847958289121545",
   "channel_id": "1465902692101787799",
-  "posted_at": "2026-02-18T09:36:56.289Z"
+  "posted_at": "2026-02-19T01:05:36.214Z"
 }
