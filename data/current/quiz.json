@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260221-jenkins-mlops",
+  "id": "pmle-20260221-vertex-ai-experiment",
   "exam_code": "PMLE",
   "domain": "ML パイプラインの自動化とオーケストレーション",
-  "section": "モデルの再トレーニング自動化",
-  "topic": "Jenkins を使用した MLOps",
+  "section": "メタデータのトラッキングと監査",
+  "topic": "Vertex AI Experiments でのアーティファクト追跡",
   "difficulty": "hard",
-  "question": "Google Cloud 環境において、Jenkins を CI/CD ツールとして組み込んだ MLOps 成熟度レベル 2（CI/CD パイプラインの自動化）のシステムを設計しています。このアーキテクチャにおける「継続的トレーニング (CT)」の概念的な実装方針として、最も適切なものはどれか。",
+  "question": "Vertex AI Experiments を使用して、機械学習モデルの実験プロセス全体の系統（Lineage）を詳細に追跡したいと考えています。特に、データの前処理ステップにおいて、どの入力アーティファクトが使用され、どの中間アーティファクトが生成されたかをメタデータとして正確に記録するためのベストプラクティスはどれですか？",
   "options": [
-    "Jenkins はパイプラインのソースコードをビルド・テストしてコンテナイメージを作成し、Vertex AI Pipelines にパイプラインをデプロイする。実行時のパラメータ管理やリネージ追跡は Vertex AI のマネージドサービスに委ねる。",
-    "Jenkins サーバーが ML ワークフロー全体のステートフルな管理を行い、各ステップ（データ処理、学習、モデル検証）の成功・失敗に応じて、Jenkins 側で条件分岐ロジックを制御し、個別の Vertex AI Custom Job を発行する。",
-    "パイプラインの実行を高速化するため、Jenkins は CI プロセス中にモデルの学習を完了させ、Vertex AI Pipelines は学習済みモデルのデプロイ（Model Registry への登録）のみをオーケストレーションする。",
-    "Jenkins はモデルの再トレーニングをトリガーするだけであり、パイプラインのコード自体は Vertex AI Workbench 内でデータサイエンティストが手動で管理し、本番環境への反映を行う。"
+    "aiplatform.log_params() を使用して、前処理に使用した入力ファイルと出力ファイルの Cloud Storage パスを文字列として記録する。",
+    "aiplatform.start_run() のコンテキスト内で aiplatform.log_artifact() を呼び出し、生成された中間データセットをアーティファクトとして直接ログに記録する。",
+    "aiplatform.start_run() のコンテキスト内で aiplatform.start_execution() を使用して前処理ステップの「実行」を定義し、入出力アーティファクトをその実行に割り当てる。",
+    "前処理ステップを Vertex AI Pipelines のコンポーネントとして別途実行し、その実行 ID を実験実行のメタデータとして手動で記録する。"
   ],
-  "correct": 0,
-  "explanation": "正解は A です。Google Cloud の推奨する MLOps アーキテクチャでは、Jenkins の役割を「CI/CD（継続的インテグレーション/継続的デプロイ）」に限定し、実際の「CT（継続的トレーニング）」の実行とオーケストレーションは Vertex AI Pipelines に任せるのがベストプラクティスです。Jenkins は ML パイプラインの構成コードやコンテナイメージのビルド、ユニットテスト、および Vertex AI Pipelines へのパイプライン定義のデプロイを担当します。実行時のスケーリング、各ステップ間のデータの受け渡し、および Vertex ML Metadata を用いたメタデータやリネージの自動記録は Vertex AI Pipelines が行うことで、再現性とトレーサビリティを確保します。他の選択肢は、CI 環境への過度な負荷（C）、不十分な自動化（D）、または複雑すぎる管理構造（B）を招くため、推奨されません。"
+  "correct": 2,
+  "explanation": "Vertex AI Experiments においてアーティファクトの「系統（Lineage）」を追跡するためのベストプラクティスは、実験実行（Run）内で Vertex ML Metadata の「実行（Execution）」を明示的に作成することです。aiplatform.start_execution() を使用すると、前処理などの具体的な工程を「実行」ノードとして定義でき、そのコンテキスト内で入力アーティファクトと出力アーティファクトを関連付けることで、どのデータから何が生成されたかというグラフ構造を構築できます。log_artifact() は単体のアーティファクトを記録するには適していますが、それ自体では「どの処理によって生成されたか」というステップ間の依存関係（系統）を表現するには不十分です。log_params() によるパスの記録は単なる情報の保持であり、メタデータとしての追跡や可視化機能は提供されません。"
 }
