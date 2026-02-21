@@ -1,17 +1,17 @@
 {
-  "id": "pmle-20260220-cloud-build-mlops",
+  "id": "pmle-20260221-jenkins-mlops",
   "exam_code": "PMLE",
   "domain": "ML パイプラインの自動化とオーケストレーション",
   "section": "モデルの再トレーニング自動化",
-  "topic": "Cloud Build を使用した MLOps",
-  "difficulty": "medium",
-  "question": "あなたは Cloud Build を使用して Vertex AI Pipelines の実行を自動化する MLOps パイプラインを構築しています。cloudbuild.yaml 内のステップで、カスタムサービスアカウント（ml-deploy-sa@project-id.iam.gserviceaccount.com）を指定してパイプラインを送信しようとしたところ、'iam.serviceAccounts.actAs' 権限が不足しているというエラーが発生し、ビルドが失敗しました。最小権限の原則に従ってこの問題を解決するために、IAM で行うべき適切な設定はどれですか？",
+  "topic": "Jenkins を使用した MLOps",
+  "difficulty": "hard",
+  "question": "Google Cloud 環境において、Jenkins を CI/CD ツールとして組み込んだ MLOps 成熟度レベル 2（CI/CD パイプラインの自動化）のシステムを設計しています。このアーキテクチャにおける「継続的トレーニング (CT)」の概念的な実装方針として、最も適切なものはどれか。",
   "options": [
-    "Cloud Build サービスアカウントに対し、ml-deploy-sa への「サービス アカウント ユーザー（roles/iam.serviceAccountUser）」ロールを付与する。",
-    "ml-deploy-sa に対し、Cloud Build サービスアカウントへの「サービス アカウント ユーザー（roles/iam.serviceAccountUser）」ロールを付与する。",
-    "Cloud Build サービスアカウントに対し、プロジェクトレベルで「Vertex AI 管理者（roles/aiplatform.admin）」ロールを付与する。",
-    "Cloud Build の設定を変更し、サービスアカウントを指定せずにデフォルトの Google 管理サービスアカウントを使用してパイプラインを実行する。"
+    "Jenkins はパイプラインのソースコードをビルド・テストしてコンテナイメージを作成し、Vertex AI Pipelines にパイプラインをデプロイする。実行時のパラメータ管理やリネージ追跡は Vertex AI のマネージドサービスに委ねる。",
+    "Jenkins サーバーが ML ワークフロー全体のステートフルな管理を行い、各ステップ（データ処理、学習、モデル検証）の成功・失敗に応じて、Jenkins 側で条件分岐ロジックを制御し、個別の Vertex AI Custom Job を発行する。",
+    "パイプラインの実行を高速化するため、Jenkins は CI プロセス中にモデルの学習を完了させ、Vertex AI Pipelines は学習済みモデルのデプロイ（Model Registry への登録）のみをオーケストレーションする。",
+    "Jenkins はモデルの再トレーニングをトリガーするだけであり、パイプラインのコード自体は Vertex AI Workbench 内でデータサイエンティストが手動で管理し、本番環境への反映を行う。"
   ],
   "correct": 0,
-  "explanation": "Cloud Build が Vertex AI Pipelines などの他のサービスを特定のサービスアカウントとして実行（借用）する場合、呼び出し元のサービスアカウント（Cloud Build SA）には、ターゲットとなるサービスアカウント（ml-deploy-sa）に対する 'iam.serviceAccounts.actAs' 権限が必要です。この権限は「サービス アカウント ユーザー（roles/iam.serviceAccountUser）」ロールに含まれています。最小権限の原則に基づき、プロジェクト全体ではなく、特定のサービスアカウントのリソースに対してこのロールを付与するのが最適です。Bは付与の方向が逆であり、Cは権限が広すぎ、Dはセキュリティのベストプラクティス（最小権限の原則）に反します。"
+  "explanation": "正解は A です。Google Cloud の推奨する MLOps アーキテクチャでは、Jenkins の役割を「CI/CD（継続的インテグレーション/継続的デプロイ）」に限定し、実際の「CT（継続的トレーニング）」の実行とオーケストレーションは Vertex AI Pipelines に任せるのがベストプラクティスです。Jenkins は ML パイプラインの構成コードやコンテナイメージのビルド、ユニットテスト、および Vertex AI Pipelines へのパイプライン定義のデプロイを担当します。実行時のスケーリング、各ステップ間のデータの受け渡し、および Vertex ML Metadata を用いたメタデータやリネージの自動記録は Vertex AI Pipelines が行うことで、再現性とトレーサビリティを確保します。他の選択肢は、CI 環境への過度な負荷（C）、不十分な自動化（D）、または複雑すぎる管理構造（B）を招くため、推奨されません。"
 }
